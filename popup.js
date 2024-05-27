@@ -23,23 +23,28 @@ function main(common, settings, progress, data) {
 
     {
         const row = settings.createRow(row_class);
-        row.appendChild(settings.createLabel(cell_class, 'Volume'));
         row.appendChild(settings.createNumberStepInput(cell_class, input_class, 'v1', data.v1, common.default_v1, common.min_volume, common.max_volume, common.step_volume, common.limitValue));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'v1_enabled', data.v1_enabled, common.default_v1_enabled, common.value));
         container.appendChild(row);
     } {
         const row = settings.createRow(row_class);
-        row.appendChild(settings.createLabel(cell_class, ''));
         row.appendChild(settings.createNumberStepInput(cell_class, input_class, 'v2', data.v2, common.default_v2, common.min_volume, common.max_volume, common.step_volume, common.limitValue));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'v2_enabled', data.v2_enabled, common.default_v2_enabled, common.value));
         container.appendChild(row);
     } {
         const row = settings.createRow(row_class);
-        row.appendChild(settings.createLabel(cell_class, ''));
         row.appendChild(settings.createNumberStepInput(cell_class, input_class, 'v3', data.v3, common.default_v3, common.min_volume, common.max_volume, common.step_volume, common.limitValue));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'v3_enabled', data.v3_enabled, common.default_v3_enabled, common.value));
         container.appendChild(row);
     } {
         const row = settings.createRow(row_class);
-        row.appendChild(settings.createLabel(cell_class, ''));
         row.appendChild(settings.createNumberStepInput(cell_class, input_class, 'v4', data.v4, common.default_v4, common.min_volume, common.max_volume, common.step_volume, common.limitValue));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'v4_enabled', data.v4_enabled, common.default_v4_enabled, common.value));
+        container.appendChild(row);
+    } {
+        const row = settings.createRow(row_class);
+        row.appendChild(settings.createNumberStepInput(cell_class, input_class, 'v5', data.v5, common.default_v5, common.min_volume, common.max_volume, common.step_volume, common.limitValue));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'v5_enabled', data.v5_enabled, common.default_v5_enabled, common.value));
         container.appendChild(row);
     }
 

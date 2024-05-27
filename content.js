@@ -30,10 +30,11 @@ function main(common) {
             volume_area.setAttribute('_tap_volume', true);
             const panel = volume_area.querySelector('div.ytp-volume-panel');
             chrome.storage.local.get(common.storage, data => {
-                create_volume_button(data.v1 === undefined ? common.default_v1 : data.v1, volume_area, panel);
-                create_volume_button(data.v2 === undefined ? common.default_v2 : data.v2, volume_area, panel);
-                create_volume_button(data.v3 === undefined ? common.default_v3 : data.v3, volume_area, panel);
-                create_volume_button(data.v4 === undefined ? common.default_v4 : data.v4, volume_area, panel);
+                if (common.value(data.v1_enabled, common.default_v1_enabled)) { create_volume_button(common.value(data.v1, common.default_v1), volume_area, panel); }
+                if (common.value(data.v2_enabled, common.default_v2_enabled)) { create_volume_button(common.value(data.v2, common.default_v2), volume_area, panel); }
+                if (common.value(data.v3_enabled, common.default_v3_enabled)) { create_volume_button(common.value(data.v3, common.default_v3), volume_area, panel); }
+                if (common.value(data.v4_enabled, common.default_v4_enabled)) { create_volume_button(common.value(data.v4, common.default_v4), volume_area, panel); }
+                if (common.value(data.v5_enabled, common.default_v5_enabled)) { create_volume_button(common.value(data.v5, common.default_v5), volume_area, panel); }
             });
         }
     }

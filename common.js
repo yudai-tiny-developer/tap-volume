@@ -1,12 +1,26 @@
-export const storage = ['v1', 'v2', 'v3', 'v4'];
+export const storage = [
+    'v1', 'v1_enabled',
+    'v2', 'v2_enabled',
+    'v3', 'v3_enabled',
+    'v4', 'v4_enabled',
+    'v5', 'v5_enabled',
+];
 
-export const default_v1 = 25;
-export const default_v2 = 50;
-export const default_v3 = 75;
-export const default_v4 = 100;
+export const default_v1 = 0;
+export const default_v2 = 25;
+export const default_v3 = 50;
+export const default_v4 = 75;
+export const default_v5 = 100;
+
 export const min_volume = 0;
 export const max_volume = 100;
 export const step_volume = 1;
+
+export const default_v1_enabled = false;
+export const default_v2_enabled = true;
+export const default_v3_enabled = true;
+export const default_v4_enabled = true;
+export const default_v5_enabled = true;
 
 export function value(value, defaultValue) {
     return value === undefined ? defaultValue : value;
