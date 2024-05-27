@@ -15,6 +15,10 @@ function main(common) {
         subtree: true,
     });
 
+    if (document.querySelector('div#container.ytd-player')) {
+        create_volume_buttons();
+    }
+
     chrome.storage.onChanged.addListener(() => {
         document.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
         create_volume_buttons(true);
