@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Volume Control for YouTube on Touch Device",
+  "name": "YouTube Volume Control for Touch Devices",
   "version": "1.0.1",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
