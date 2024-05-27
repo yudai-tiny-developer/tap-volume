@@ -26,7 +26,7 @@ function main(common) {
 
     function create_volume_buttons(force = false) {
         const volume_area = document.querySelector('span.ytp-volume-area');
-        if (force || !volume_area.getAttribute('_tap_volume')) {
+        if (volume_area && (force || !volume_area.getAttribute('_tap_volume'))) {
             volume_area.setAttribute('_tap_volume', true);
             const panel = volume_area.querySelector('div.ytp-volume-panel');
             chrome.storage.local.get(common.storage, data => {
