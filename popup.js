@@ -46,6 +46,16 @@ function main(common, settings, progress, data) {
         row.appendChild(settings.createNumberStepInput(cell_class, input_class, 'v5', data.v5, common.default_v5, common.min_volume, common.max_volume, common.step_volume, common.limitValue));
         row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'v5_enabled', data.v5_enabled, common.default_v5_enabled, common.value));
         container.appendChild(row);
+    } {
+        const row = settings.createRow(row_class);
+        row.appendChild(settings.createLabel(cell_class, ''));
+        row.appendChild(settings.createLabel(cell_class, ''));
+        container.appendChild(row);
+    } {
+        const row = settings.createRow(row_class);
+        row.appendChild(settings.createLabel(cell_class, 'Hide Volume Slider'));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'hide_slider', data.hide_slider, common.default_hide_slider, common.value));
+        container.appendChild(row);
     }
 
     settings.registerResetButton(reset_button, progress_div, progress_class, done_class, toggle_class, input_class, progress);
