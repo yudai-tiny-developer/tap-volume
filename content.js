@@ -15,6 +15,10 @@ function main(common) {
         subtree: true,
     });
 
+    if (document.querySelector('div#container.ytd-player')) {
+        create_volume_buttons();
+    }
+
     chrome.storage.onChanged.addListener(() => {
         document.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
         create_volume_buttons(true);
@@ -22,7 +26,7 @@ function main(common) {
 
     function create_volume_buttons(force = false) {
         const volume_area = document.querySelector('span.ytp-volume-area');
-        if (force || !volume_area.getAttribute('_tap_volume')) {
+        if (volume_area && (force || !volume_area.getAttribute('_tap_volume'))) {
             volume_area.setAttribute('_tap_volume', true);
             const panel = volume_area.querySelector('div.ytp-volume-panel');
             chrome.storage.local.get(common.storage, data => {
