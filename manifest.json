@@ -38,7 +38,7 @@
         "progress.js"
       ],
       "matches": [
-        "https://www.youtube.com/watch*"
+        "https://www.youtube.com/*"
       ]
     }
   ],
