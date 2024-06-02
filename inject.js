@@ -6,4 +6,5 @@ document.addEventListener('_tap_volume', e => {
         player.setVolume(e.detail);
         player.unMute();
     }
+    player.blur();
 });
