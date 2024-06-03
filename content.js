@@ -58,8 +58,10 @@ function main(common) {
         volume_button.title = volume + '%';
         volume_button.innerText = volume_button.title;
         volume_button.classList.add('_tap_volume_button', 'ytp-button');
+        volume_button.setAttribute('tabindex', '-1');
         volume_button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: volume }));
+            volume_button.blur();
         });
         volume_area.insertBefore(volume_button, panel);
     }
