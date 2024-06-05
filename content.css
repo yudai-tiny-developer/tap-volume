@@ -2,10 +2,6 @@
     --tap-volume-slider-display: block;
 }
 
-button._tap_volume_button {
-    text-align: center;
-}
-
 div.ytp-volume-panel {
     display: var(--tap-volume-slider-display);
 }
