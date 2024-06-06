@@ -20,7 +20,7 @@ function main(common) {
     }
 
     chrome.storage.onChanged.addListener(() => {
-        document.querySelectorAll('span._tap_volume_button').forEach(b => b.remove());
+        document.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
         apply_settings(true);
     });
 
