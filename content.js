@@ -3,6 +3,8 @@ import(chrome.runtime.getURL('common.js')).then(common =>
 );
 
 function main(common) {
+    let init = true;
+
     new MutationObserver((mutations, observer) => {
         for (const m of mutations) {
             if (m.target.nodeName === 'DIV' && m.target.id === 'container' && m.target.classList.contains('ytd-player')) {
@@ -15,12 +17,12 @@ function main(common) {
         subtree: true,
     });
 
-    if (document.querySelector('div#container.ytd-player')) {
+    if (document.body.querySelector('div#container.ytd-player')) {
         apply_settings();
     }
 
     chrome.storage.onChanged.addListener(() => {
-        document.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
+        document.body.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
         apply_settings(true);
     });
 
@@ -28,11 +30,18 @@ function main(common) {
         chrome.storage.local.get(common.storage, data => {
             create_buttons(data, force);
             set_slider_display(data);
+
+            if (init) {
+                init = false;
+                document.dispatchEvent(new CustomEvent('_tap_volume_init'));
+            } else {
+                document.dispatchEvent(new CustomEvent('_tap_volume_update'));
+            }
         });
     }
 
     function create_buttons(data, force) {
-        const area = document.querySelector('span.ytp-volume-area');
+        const area = document.body.querySelector('span.ytp-volume-area');
         if (area && (force || !area.getAttribute('_tap_volume'))) {
             area.setAttribute('_tap_volume', true);
             const panel = area.querySelector('div.ytp-volume-panel');
@@ -57,7 +66,7 @@ function main(common) {
         const button = document.createElement('button');
         button.title = value + '%';
         button.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 72 72"><text font-size="20" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#fff">${button.title}</text></svg>`;
-        button.classList.add('_tap_volume_button', 'ytp-button');
+        button.classList.add('_tap_volume_button', '_tap_volume_button_' + value, 'ytp-button');
         button.setAttribute('tabindex', '-1');
         button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: value }));
