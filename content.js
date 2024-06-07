@@ -17,12 +17,12 @@ function main(common) {
         subtree: true,
     });
 
-    if (document.querySelector('div#container.ytd-player')) {
+    if (document.body.querySelector('div#container.ytd-player')) {
         apply_settings();
     }
 
     chrome.storage.onChanged.addListener(() => {
-        document.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
+        document.body.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
         apply_settings(true);
     });
 
@@ -41,7 +41,7 @@ function main(common) {
     }
 
     function create_buttons(data, force) {
-        const area = document.querySelector('span.ytp-volume-area');
+        const area = document.body.querySelector('span.ytp-volume-area');
         if (area && (force || !area.getAttribute('_tap_volume'))) {
             area.setAttribute('_tap_volume', true);
             const panel = area.querySelector('div.ytp-volume-panel');
