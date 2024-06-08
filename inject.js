@@ -13,26 +13,20 @@ function _tap_volume_update_class(remove_class, add_target_class, add_value) {
 }
 
 function _tap_volume_activate(value) {
-    if (document.body.querySelector('button._tap_volume_button._tap_volume_button_' + value)) {
-        _tap_volume_update_class('_tap_volume_active', '_tap_volume_button_' + value, '_tap_volume_active')
-    } else {
-        _tap_volume_update_class('_tap_volume_active', '_tap_volume_tap', '_tap_volume_active')
-    }
+    _tap_volume_update_class('_tap_volume_active', '_tap_volume_button_' + value, '_tap_volume_active');
 }
 
-function _tap_volume_init(e) {
+function _tap_volume_onChange(e) {
     _tap_volume_activate(e.volume);
 }
 
 document.addEventListener('_tap_volume_init', e => {
     const player = document.body.querySelector('div#movie_player');
     _tap_volume_activate(player.getVolume());
-    player.addEventListener('onVolumeChange', _tap_volume_init);
+    player.addEventListener('onVolumeChange', _tap_volume_onChange);
 });
 
 document.addEventListener('_tap_volume', e => {
-    _tap_volume_update_class('_tap_volume_tap', '_tap_volume_button_' + e.detail, '_tap_volume_tap');
-
     const player = document.body.querySelector('div#movie_player');
     if (e.detail === 0) {
         player.mute();
