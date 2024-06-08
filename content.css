@@ -1,5 +1,10 @@
-button._tap_volume_active {
-    stroke: rgb(255, 78, 69) !important;
+button._tap_volume_button {
+    fill: white !important;
+}
+
+button._tap_volume_button._tap_volume_active {
+    fill: #ff8983 !important;
+    font-weight: bold !important;
 }
 
 :root {
