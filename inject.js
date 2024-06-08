@@ -20,13 +20,13 @@ function _tap_volume_onChange(e) {
     _tap_volume_activate(e.volume);
 }
 
-let _tap_volume_uninit = true;
+let _tap_volume_init = true;
 
 document.addEventListener('_tap_volume_init', e => {
     const player = document.body.querySelector('div#movie_player');
     _tap_volume_activate(player.getVolume());
-    if (_tap_volume_uninit) {
-        _tap_volume_uninit = false;
+    if (_tap_volume_init) {
+        _tap_volume_init = false;
         player.addEventListener('onVolumeChange', _tap_volume_onChange, { once: true });
     }
 });
