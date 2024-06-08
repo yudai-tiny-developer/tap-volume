@@ -30,6 +30,7 @@ document.addEventListener('_tap_volume', e => {
         player.setVolume(e.detail);
         player.unMute();
     }
+    _tap_volume_activate(player.getVolume());
 });
 
 document.addEventListener('_tap_volume_init', e => {
