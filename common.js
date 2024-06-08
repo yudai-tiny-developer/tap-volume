@@ -7,7 +7,7 @@ export const storage = [
     'hide_slider',
 ];
 
-export const default_v1 = 0;
+export const default_v1 = 1;
 export const default_v2 = 25;
 export const default_v3 = 50;
 export const default_v4 = 75;

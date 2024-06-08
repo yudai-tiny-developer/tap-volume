@@ -3,8 +3,6 @@ import(chrome.runtime.getURL('common.js')).then(common =>
 );
 
 function main(common) {
-    let init = true;
-
     new MutationObserver((mutations, observer) => {
         for (const m of mutations) {
             if (m.target.nodeName === 'DIV' && m.target.id === 'container' && m.target.classList.contains('ytd-player')) {
@@ -30,13 +28,7 @@ function main(common) {
         chrome.storage.local.get(common.storage, data => {
             create_buttons(data, force);
             set_slider_display(data);
-
-            if (init) {
-                init = false;
-                document.dispatchEvent(new CustomEvent('_tap_volume_init'));
-            } else {
-                document.dispatchEvent(new CustomEvent('_tap_volume_update'));
-            }
+            document.dispatchEvent(new CustomEvent('_tap_volume_init'));
         });
     }
 
