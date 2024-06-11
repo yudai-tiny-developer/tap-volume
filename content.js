@@ -14,22 +14,21 @@ function main(common) {
     }).observe(app, { childList: true, subtree: true });
 
     chrome.storage.onChanged.addListener(() => {
-        app.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
-        apply_settings(true);
+        apply_settings();
     });
 
-    function apply_settings(force = false) {
+    function apply_settings() {
         chrome.storage.local.get(common.storage, data => {
-            create_buttons(data, force);
+            create_buttons(data);
             set_slider_display(data);
             document.dispatchEvent(new CustomEvent('_tap_volume_init'));
         });
     }
 
-    function create_buttons(data, force) {
+    function create_buttons(data) {
         const area = app.querySelector('span.ytp-volume-area');
-        if (area && (force || !area.getAttribute('_tap_volume'))) {
-            area.setAttribute('_tap_volume', true);
+        if (area) {
+            area.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
             const panel = area.querySelector('div.ytp-volume-panel');
 
             if (common.value(data.v1_enabled, common.default_v1_enabled)) { create_button(common.value(data.v1, common.default_v1), area, panel); }
