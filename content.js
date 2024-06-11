@@ -1,41 +1,34 @@
-import(chrome.runtime.getURL('common.js')).then(common =>
-    main(common)
-);
+const app = document.querySelector('ytd-app');
+if (app) {
+    import(chrome.runtime.getURL('common.js')).then(common => {
+        main(common);
+    });
+}
 
 function main(common) {
     new MutationObserver((mutations, observer) => {
-        for (const m of mutations) {
-            if (m.target.nodeName === 'DIV' && m.target.id === 'container' && m.target.classList.contains('ytd-player')) {
-                apply_settings();
-                return;
-            }
+        if (app.querySelector('span.ytp-volume-area')) {
+            observer.disconnect();
+            apply_settings();
         }
-    }).observe(document, {
-        childList: true,
-        subtree: true,
-    });
-
-    if (document.body.querySelector('div#container.ytd-player')) {
-        apply_settings();
-    }
+    }).observe(app, { childList: true, subtree: true });
 
     chrome.storage.onChanged.addListener(() => {
-        document.body.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
-        apply_settings(true);
+        apply_settings();
     });
 
-    function apply_settings(force = false) {
+    function apply_settings() {
         chrome.storage.local.get(common.storage, data => {
-            create_buttons(data, force);
+            create_buttons(data);
             set_slider_display(data);
             document.dispatchEvent(new CustomEvent('_tap_volume_init'));
         });
     }
 
-    function create_buttons(data, force) {
-        const area = document.body.querySelector('span.ytp-volume-area');
-        if (area && (force || !area.getAttribute('_tap_volume'))) {
-            area.setAttribute('_tap_volume', true);
+    function create_buttons(data) {
+        const area = app.querySelector('span.ytp-volume-area');
+        if (area) {
+            area.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
             const panel = area.querySelector('div.ytp-volume-panel');
 
             if (common.value(data.v1_enabled, common.default_v1_enabled)) { create_button(common.value(data.v1, common.default_v1), area, panel); }
