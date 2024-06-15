@@ -53,6 +53,7 @@ function main(common) {
         button.classList.add('_tap_volume_button', '_tap_volume_button_' + value, 'ytp-button');
         button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: value }));
+            button.blur();
         });
         area.insertBefore(button, panel);
     }
