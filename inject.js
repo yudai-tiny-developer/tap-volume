@@ -1,11 +1,7 @@
-const app = document.querySelector('ytd-app');
-if (app) {
-    main();
-}
-
-function main() {
+const _tap_volume_app = document.querySelector('ytd-app');
+if (_tap_volume_app) {
     function _tap_volume_update_class(remove_class, add_target_class, add_value) {
-        for (const button of app.querySelectorAll('button._tap_volume_button')) {
+        for (const button of _tap_volume_app.querySelectorAll('button._tap_volume_button')) {
             const oldToken = button.classList.contains(remove_class) ? remove_class : undefined;
             const newToken = button.classList.contains(add_target_class) ? add_value : undefined;
             if (oldToken && newToken) {
@@ -25,7 +21,7 @@ function main() {
     let _tap_volume_init = true;
 
     document.addEventListener('_tap_volume_init', e => {
-        const player = app.querySelector('div#movie_player');
+        const player = _tap_volume_app.querySelector('div#movie_player');
         if (player) {
             _tap_volume_activate(player.getVolume());
             if (_tap_volume_init) {
@@ -38,7 +34,7 @@ function main() {
     });
 
     document.addEventListener('_tap_volume', e => {
-        const player = app.querySelector('div#movie_player');
+        const player = _tap_volume_app.querySelector('div#movie_player');
         if (player) {
             if (e.detail === 0) {
                 player.mute();
