@@ -49,7 +49,7 @@ function main(common) {
 
     function create_button(value, area, panel) {
         const button = document.createElement('button');
-        button.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 72 72"><text font-size="20" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">${value}%</text></svg>`;
+        button.innerHTML = value + '%';
         button.classList.add('_tap_volume_button', '_tap_volume_button_' + value, 'ytp-button');
         button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: value }));

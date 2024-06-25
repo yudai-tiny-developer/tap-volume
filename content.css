@@ -1,9 +1,10 @@
 button._tap_volume_button {
-    fill: white !important;
+    color: var(--yt-spec-text-primary) !important;
+    text-align: center !important;
 }
 
 button._tap_volume_button._tap_volume_active {
-    fill: #ff8983 !important;
+    color: var(--yt-spec-red-30) !important;
     font-weight: bold !important;
 }
 
@@ -12,5 +13,5 @@ button._tap_volume_button._tap_volume_active {
 }
 
 div.ytp-volume-panel {
-    display: var(--tap-volume-slider-display);
+    display: var(--tap-volume-slider-display) !important;
 }
