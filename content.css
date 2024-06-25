@@ -1,10 +1,10 @@
 button._tap_volume_button {
-    color: var(--yt-spec-text-primary) !important;
+    fill: var(--yt-spec-text-primary) !important;
     text-align: center !important;
 }
 
 button._tap_volume_button._tap_volume_active {
-    color: var(--yt-spec-red-30) !important;
+    fill: var(--yt-spec-red-30) !important;
     font-weight: bold !important;
 }
 
