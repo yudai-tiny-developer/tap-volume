@@ -4,22 +4,11 @@ import(chrome.runtime.getURL('common.js')).then(common => {
 });
 
 function main(common) {
-    new MutationObserver((mutations, observer) => {
-        if (app.querySelector('span.ytp-volume-area')) {
-            observer.disconnect();
-            apply_settings();
-        }
-    }).observe(app, { childList: true, subtree: true });
-
-    chrome.storage.onChanged.addListener(() => {
-        apply_settings();
-    });
-
-    function apply_settings() {
+    function loadSettings() {
         chrome.storage.local.get(common.storage, data => {
             create_buttons(data);
             set_slider_display(data);
-            document.dispatchEvent(new CustomEvent('_tap_volume_init'));
+            document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
         });
     }
 
@@ -55,6 +44,20 @@ function main(common) {
         });
         area.insertBefore(button, panel);
     }
+
+    document.addEventListener('_tap_volume_init', e => {
+        new MutationObserver((mutations, observer) => {
+            if (app.querySelector('span.ytp-volume-area')) {
+                observer.disconnect();
+                loadSettings();
+            }
+        }).observe(app, { childList: true, subtree: true });
+        loadSettings();
+    });
+
+    chrome.storage.onChanged.addListener(() => {
+        loadSettings();
+    });
 
     const s = document.createElement('script');
     s.src = chrome.runtime.getURL('inject.js');
