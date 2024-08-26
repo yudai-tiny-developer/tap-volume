@@ -49,7 +49,6 @@ function main(app, common) {
     document.addEventListener('_tap_volume_init', e => {
         new MutationObserver((mutations, observer) => {
             if (app.querySelector('span.ytp-volume-area')) {
-                observer.disconnect();
                 loadSettings();
             }
         }).observe(app, { childList: true, subtree: true });
