@@ -15,8 +15,7 @@ function main(app, common) {
 
     function create_buttons(data) {
         const area = app.querySelector('span.ytp-volume-area');
-        if (area) {
-            area.querySelectorAll('button._tap_volume_button').forEach(b => b.remove());
+        if (area && !area.querySelector('button._tap_volume_button')) {
             const panel = area.querySelector('div.ytp-volume-panel');
 
             if (common.value(data.v1_enabled, common.default_v1_enabled)) { create_button(common.value(data.v1, common.default_v1), area, panel); }
