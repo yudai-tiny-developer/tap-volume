@@ -49,3 +49,9 @@ function step(value, stepValue) {
     const step = 1.0 / stepValue;
     return Math.round(value * step) / step;
 }
+
+export function isLiveChat(url) {
+    return url.startsWith('https://www.youtube.com/live_chat?')
+        || url.startsWith('https://www.youtube.com/live_chat_replay?')
+        ;
+}
