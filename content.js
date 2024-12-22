@@ -16,12 +16,18 @@ function main(app, common) {
     function create_buttons(data) {
         const area = app.querySelector('span.ytp-volume-area');
         if (area) {
+            const buttons = new Set(area.querySelectorAll('button._tap_volume_button'));
+
             let panel = area.querySelector('button.ytp-settings-button');
-            panel = update_button(data.v5, common.default_v5, area, panel, data.v5_enabled, common.default_v5_enabled);
-            panel = update_button(data.v4, common.default_v4, area, panel, data.v4_enabled, common.default_v4_enabled);
-            panel = update_button(data.v3, common.default_v3, area, panel, data.v3_enabled, common.default_v3_enabled);
-            panel = update_button(data.v2, common.default_v2, area, panel, data.v2_enabled, common.default_v2_enabled);
-            panel = update_button(data.v1, common.default_v1, area, panel, data.v1_enabled, common.default_v1_enabled);
+            panel = update_button(data.v5, common.default_v5, area, panel, data.v5_enabled, common.default_v5_enabled); buttons.delete(panel);
+            panel = update_button(data.v4, common.default_v4, area, panel, data.v4_enabled, common.default_v4_enabled); buttons.delete(panel);
+            panel = update_button(data.v3, common.default_v3, area, panel, data.v3_enabled, common.default_v3_enabled); buttons.delete(panel);
+            panel = update_button(data.v2, common.default_v2, area, panel, data.v2_enabled, common.default_v2_enabled); buttons.delete(panel);
+            panel = update_button(data.v1, common.default_v1, area, panel, data.v1_enabled, common.default_v1_enabled); buttons.delete(panel);
+
+            for (const button of buttons) {
+                button.remove();
+            }
         }
     }
 
