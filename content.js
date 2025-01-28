@@ -5,11 +5,22 @@ import(chrome.runtime.getURL('common.js')).then(common => {
 });
 
 function main(app, common) {
+    let cache;
+
+    function update() {
+        if (cache) {
+            create_buttons(cache);
+            set_slider_display(cache);
+            document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
+        } else {
+            loadSettings();
+        }
+    }
+
     function loadSettings() {
         chrome.storage.local.get(common.storage, data => {
-            create_buttons(data);
-            set_slider_display(data);
-            document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
+            cache = data;
+            update();
         });
     }
 
@@ -53,7 +64,6 @@ function main(app, common) {
         button.classList.add('_tap_volume_button', '_tap_volume_button_' + value, 'ytp-button');
         button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: value }));
-            button.blur();
         });
         area.insertBefore(button, panel);
         return button;
@@ -62,7 +72,7 @@ function main(app, common) {
     document.addEventListener('_tap_volume_init', e => {
         new MutationObserver((mutations, observer) => {
             if (app.querySelector('span.ytp-volume-area')) {
-                loadSettings();
+                update();
             }
         }).observe(app, { childList: true, subtree: true });
         loadSettings();
