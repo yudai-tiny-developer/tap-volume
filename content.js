@@ -13,7 +13,6 @@ function main(app, common) {
         } else {
             loadSettings();
         }
-        console.log('applySettings');
     }
 
     function loadSettings() {
