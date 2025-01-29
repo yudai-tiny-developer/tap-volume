@@ -5,37 +5,41 @@ import(chrome.runtime.getURL('common.js')).then(common => {
 });
 
 function main(app, common) {
-    function applySettings() {
+    function applySettings(force) {
         if (settings) {
-            update_buttons(settings);
+            update_buttons(settings, force);
             update_slider(settings);
             document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
         } else {
             loadSettings();
         }
+        console.log('applySettings');
     }
 
     function loadSettings() {
         chrome.storage.local.get(common.storage, data => {
             settings = data;
-            applySettings();
+            applySettings(true);
         });
     }
 
-    function update_buttons(data) {
+    function update_buttons(data, force) {
         const area = app.querySelector('span.ytp-volume-area');
         if (area) {
-            const buttons = new Set(area.querySelectorAll('button._tap_volume_button'));
+            const buttons = area.querySelectorAll('button._tap_volume_button');
+            if (buttons.length === 0 || force) {
+                const buttonsSet = new Set(buttons);
 
-            let panel = area.querySelector('button.ytp-settings-button');
-            panel = update_button(data.v5, common.default_v5, area, panel, data.v5_enabled, common.default_v5_enabled); buttons.delete(panel);
-            panel = update_button(data.v4, common.default_v4, area, panel, data.v4_enabled, common.default_v4_enabled); buttons.delete(panel);
-            panel = update_button(data.v3, common.default_v3, area, panel, data.v3_enabled, common.default_v3_enabled); buttons.delete(panel);
-            panel = update_button(data.v2, common.default_v2, area, panel, data.v2_enabled, common.default_v2_enabled); buttons.delete(panel);
-            panel = update_button(data.v1, common.default_v1, area, panel, data.v1_enabled, common.default_v1_enabled); buttons.delete(panel);
+                let panel = area.querySelector('button.ytp-settings-button');
+                panel = update_button(data.v5, common.default_v5, area, panel, data.v5_enabled, common.default_v5_enabled); buttonsSet.delete(panel);
+                panel = update_button(data.v4, common.default_v4, area, panel, data.v4_enabled, common.default_v4_enabled); buttonsSet.delete(panel);
+                panel = update_button(data.v3, common.default_v3, area, panel, data.v3_enabled, common.default_v3_enabled); buttonsSet.delete(panel);
+                panel = update_button(data.v2, common.default_v2, area, panel, data.v2_enabled, common.default_v2_enabled); buttonsSet.delete(panel);
+                panel = update_button(data.v1, common.default_v1, area, panel, data.v1_enabled, common.default_v1_enabled); buttonsSet.delete(panel);
 
-            for (const button of buttons) {
-                button.remove();
+                for (const button of buttonsSet) {
+                    button.remove();
+                }
             }
         }
     }
@@ -73,7 +77,7 @@ function main(app, common) {
     document.addEventListener('_tap_volume_init', e => {
         loadSettings();
         observer?.disconnect();
-        observer = new MutationObserver(applySettings);
+        observer = new MutationObserver(() => applySettings());
         observer.observe(app, { childList: true, subtree: true });
     });
 
