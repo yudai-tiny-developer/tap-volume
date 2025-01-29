@@ -5,12 +5,10 @@ import(chrome.runtime.getURL('common.js')).then(common => {
 });
 
 function main(app, common) {
-    let cache;
-
-    function update() {
-        if (cache) {
-            create_buttons(cache);
-            set_slider_display(cache);
+    function applySettings() {
+        if (settings) {
+            update_buttons(settings);
+            update_slider(settings);
             document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
         } else {
             loadSettings();
@@ -19,12 +17,12 @@ function main(app, common) {
 
     function loadSettings() {
         chrome.storage.local.get(common.storage, data => {
-            cache = data;
-            update();
+            settings = data;
+            applySettings();
         });
     }
 
-    function create_buttons(data) {
+    function update_buttons(data) {
         const area = app.querySelector('span.ytp-volume-area');
         if (area) {
             const buttons = new Set(area.querySelectorAll('button._tap_volume_button'));
@@ -42,7 +40,7 @@ function main(app, common) {
         }
     }
 
-    function set_slider_display(data) {
+    function update_slider(data) {
         if (common.value(data.hide_slider, common.default_hide_slider)) {
             document.documentElement.style.setProperty('--tap-volume-slider-display', 'none');
         } else {
@@ -69,13 +67,14 @@ function main(app, common) {
         return button;
     }
 
+    let settings;
+    let observer;
+
     document.addEventListener('_tap_volume_init', e => {
-        new MutationObserver((mutations, observer) => {
-            if (app.querySelector('span.ytp-volume-area')) {
-                update();
-            }
-        }).observe(app, { childList: true, subtree: true });
         loadSettings();
+        observer?.disconnect();
+        observer = new MutationObserver(applySettings);
+        observer.observe(app, { childList: true, subtree: true });
     });
 
     chrome.storage.onChanged.addListener(() => {
