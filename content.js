@@ -9,6 +9,7 @@ function main(app, common) {
         if (settings) {
             update_buttons(settings, force);
             update_slider(settings);
+            update_shortcut_command(settings);
             document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
         } else {
             loadSettings();
@@ -70,8 +71,35 @@ function main(app, common) {
         return button;
     }
 
+    function update_shortcut_command(data) {
+        shortcut_command = command => {
+            let value;
+            switch (command) {
+                case 'v1':
+                    value = common.value(data.v1, common.default_v1);
+                    break;
+                case 'v2':
+                    value = common.value(data.v2, common.default_v2);
+                    break;
+                case 'v3':
+                    value = common.value(data.v3, common.default_v3);
+                    break;
+                case 'v4':
+                    value = common.value(data.v4, common.default_v4);
+                    break;
+                case 'v5':
+                    value = common.value(data.v5, common.default_v5);
+                    break;
+                default:
+                    return;
+            }
+            document.dispatchEvent(new CustomEvent('_tap_volume', { detail: value }));
+        };
+    }
+
     let settings;
     let observer;
+    let shortcut_command;
 
     document.addEventListener('_tap_volume_init', e => {
         loadSettings();
@@ -82,6 +110,10 @@ function main(app, common) {
 
     chrome.storage.onChanged.addListener(() => {
         loadSettings();
+    });
+
+    chrome.runtime.onMessage.addListener(command => {
+        shortcut_command(command);
     });
 
     const s = document.createElement('script');

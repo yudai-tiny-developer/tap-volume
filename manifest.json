@@ -1,13 +1,16 @@
 {
     "manifest_version": 3,
     "name": "YouTube Volume Control for Touch Devices",
-    "version": "1.8.8",
+    "version": "1.9.0",
     "description": "__MSG_appDesc__",
     "default_locale": "en",
     "icons": {
         "16": "icons/16.png",
         "48": "icons/48.png",
         "128": "icons/128.png"
+    },
+    "background": {
+        "service_worker": "background.js"
     },
     "content_scripts": [
         {
@@ -44,5 +47,22 @@
     },
     "permissions": [
         "storage"
-    ]
+    ],
+    "commands": {
+        "v1": {
+            "description": "Set volume to ROW1 value."
+        },
+        "v2": {
+            "description": "Set volume to ROW2 value."
+        },
+        "v3": {
+            "description": "Set volume to ROW3 value."
+        },
+        "v4": {
+            "description": "Set volume to ROW4 value."
+        },
+        "v5": {
+            "description": "Set volume to ROW5 value."
+        }
+    }
 }
