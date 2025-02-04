@@ -44,7 +44,7 @@ document.addEventListener('_tap_volume', e => {
                 player.unMute();
             }
         }
-        player.dispatchEvent(new MouseEvent('mouseout'));
+        document.activeElement.blur();
     }
 });
 
