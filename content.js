@@ -5,41 +5,40 @@ import(chrome.runtime.getURL('common.js')).then(common => {
 });
 
 function main(app, common) {
-    function applySettings(force) {
-        if (settings) {
-            update_buttons(settings, force);
-            update_slider(settings);
-            update_shortcut_command(settings);
-            document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
-        } else {
-            loadSettings();
-        }
-    }
-
     function loadSettings() {
+        const area = app.querySelector('span.ytp-volume-area');
+        if (!area) {
+            return false;
+        }
+
+        const panel = area.querySelector('div.ytp-volume-panel');
+        if (!panel) {
+            return false;
+        }
+
         chrome.storage.local.get(common.storage, data => {
-            settings = data;
-            applySettings(true);
+            update_buttons(data, area, panel);
+            update_slider(data);
+            update_shortcut_command(data);
+            document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
         });
+
+        return true;
     }
 
-    function update_buttons(data, force) {
-        const area = app.querySelector('span.ytp-volume-area');
-        if (area) {
-            const buttons = area.querySelectorAll('button._tap_volume_button');
-            if (buttons.length === 0 || force) {
-                const buttonsSet = new Set(buttons);
+    function update_buttons(data, area, panel) {
+        const buttons = area.querySelectorAll('button._tap_volume_button');
+        if (buttons.length === 0) {
+            const buttonsSet = new Set(buttons);
 
-                let panel = area.querySelector('button.ytp-settings-button');
-                panel = update_button(data.v5, common.default_v5, area, panel, data.v5_enabled, common.default_v5_enabled); buttonsSet.delete(panel);
-                panel = update_button(data.v4, common.default_v4, area, panel, data.v4_enabled, common.default_v4_enabled); buttonsSet.delete(panel);
-                panel = update_button(data.v3, common.default_v3, area, panel, data.v3_enabled, common.default_v3_enabled); buttonsSet.delete(panel);
-                panel = update_button(data.v2, common.default_v2, area, panel, data.v2_enabled, common.default_v2_enabled); buttonsSet.delete(panel);
-                panel = update_button(data.v1, common.default_v1, area, panel, data.v1_enabled, common.default_v1_enabled); buttonsSet.delete(panel);
+            panel = update_button(data.v5, common.default_v5, area, panel, data.v5_enabled, common.default_v5_enabled); buttonsSet.delete(panel);
+            panel = update_button(data.v4, common.default_v4, area, panel, data.v4_enabled, common.default_v4_enabled); buttonsSet.delete(panel);
+            panel = update_button(data.v3, common.default_v3, area, panel, data.v3_enabled, common.default_v3_enabled); buttonsSet.delete(panel);
+            panel = update_button(data.v2, common.default_v2, area, panel, data.v2_enabled, common.default_v2_enabled); buttonsSet.delete(panel);
+            panel = update_button(data.v1, common.default_v1, area, panel, data.v1_enabled, common.default_v1_enabled); buttonsSet.delete(panel);
 
-                for (const button of buttonsSet) {
-                    button.remove();
-                }
+            for (const button of buttonsSet) {
+                button.remove();
             }
         }
     }
@@ -97,23 +96,20 @@ function main(app, common) {
         };
     }
 
-    let settings;
-    let observer;
     let shortcut_command;
-
-    document.addEventListener('_tap_volume_init', e => {
-        loadSettings();
-        observer?.disconnect();
-        observer = new MutationObserver(() => applySettings());
-        observer.observe(app, { childList: true, subtree: true });
-    });
-
-    chrome.storage.onChanged.addListener(() => {
-        loadSettings();
-    });
-
     chrome.runtime.onMessage.addListener(command => {
-        shortcut_command(command);
+        if (shortcut_command) {
+            shortcut_command(command);
+        }
+    });
+
+    chrome.storage.onChanged.addListener(loadSettings);
+    document.addEventListener('_tap_volume_init', e => {
+        const interval = setInterval(() => {
+            if (loadSettings()) {
+                clearInterval(interval);
+            }
+        }, 200);
     });
 
     const s = document.createElement('script');
