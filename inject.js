@@ -47,17 +47,21 @@
 
     const detect_interval = setInterval(() => {
         player = app.querySelector('div#movie_player');
-        if (player) {
-            area = player.querySelector('span.ytp-volume-area');
-            if (area) {
-                clearInterval(detect_interval);
-
-                player.addEventListener('onVolumeChange', e => {
-                    activate(e.volume);
-                });
-
-                document.dispatchEvent(new CustomEvent('_tap_volume_init'));
-            }
+        if (!player) {
+            return;
         }
-    }, 200);
+
+        area = player.querySelector('span.ytp-volume-area');
+        if (!area) {
+            return;
+        }
+
+        clearInterval(detect_interval);
+
+        player.addEventListener('onVolumeChange', e => {
+            activate(e.volume);
+        });
+
+        document.dispatchEvent(new CustomEvent('_tap_volume_init'));
+    }, 1000);
 })();
