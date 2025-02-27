@@ -63,5 +63,5 @@
         });
 
         document.dispatchEvent(new CustomEvent('_tap_volume_init'));
-    }, 1000);
+    }, 500);
 })();
