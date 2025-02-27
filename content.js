@@ -88,12 +88,12 @@ function main(app, common) {
         const detect_interval = setInterval(() => {
             const area = app.querySelector('span.ytp-volume-area');
             if (!area) {
-                return false;
+                return;
             }
 
             const panel = area.querySelector('div.ytp-volume-panel');
             if (!panel) {
-                return false;
+                return;
             }
 
             clearInterval(detect_interval);
