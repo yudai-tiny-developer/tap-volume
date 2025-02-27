@@ -1,10 +1,5 @@
 (() => {
-    let player;
-    let area;
-    let onVolumeChange;
-
     function update_class(remove_class, add_target_class, add_value) {
-        area = area ?? document.querySelector('span.ytp-volume-area');
         if (area) {
             for (const button of area.querySelectorAll('button._tap_volume_button')) {
                 const oldToken = button.classList.contains(remove_class) ? remove_class : undefined;
@@ -24,22 +19,19 @@
         update_class('_tap_volume_active', '_tap_volume_button_' + value, '_tap_volume_active');
     }
 
+    const app = document.querySelector('ytd-app') ?? document.body; // YouTube.com or Embedded Player
+
+    let player;
+    let area;
+
     document.addEventListener('_tap_volume_loaded', () => {
         player = player ?? document.querySelector('div#movie_player');
         if (player) {
             activate(player.getVolume());
-
-            if (!onVolumeChange) {
-                onVolumeChange = e => {
-                    activate(e.volume);
-                };
-                player.addEventListener('onVolumeChange', onVolumeChange);
-            }
         }
     });
 
     document.addEventListener('_tap_volume', e => {
-        player = player ?? document.querySelector('div#movie_player');
         if (player) {
             if (e.detail === 0) {
                 player.mute();
@@ -53,5 +45,23 @@
         }
     });
 
-    document.dispatchEvent(new CustomEvent('_tap_volume_init'));
+    const detect_interval = setInterval(() => {
+        player = app.querySelector('div#movie_player');
+        if (!player) {
+            return;
+        }
+
+        area = player.querySelector('span.ytp-volume-area');
+        if (!area) {
+            return;
+        }
+
+        clearInterval(detect_interval);
+
+        player.addEventListener('onVolumeChange', e => {
+            activate(e.volume);
+        });
+
+        document.dispatchEvent(new CustomEvent('_tap_volume_init'));
+    }, 500);
 })();
