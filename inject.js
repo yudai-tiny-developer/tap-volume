@@ -64,5 +64,5 @@
         player.addEventListener('onVolumeChange', onVolumeChange);
 
         document.dispatchEvent(new CustomEvent('_tap_volume_init'));
-    }, 500);
+    }, 1000);
 })();
