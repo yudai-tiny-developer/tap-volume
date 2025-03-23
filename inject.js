@@ -19,6 +19,10 @@
         update_class('_tap_volume_active', '_tap_volume_button_' + value, '_tap_volume_active');
     }
 
+    function onVolumeChange(e) {
+        activate(e.volume);
+    }
+
     const app = document.querySelector('ytd-app') ?? document.body; // YouTube.com or Embedded Player
 
     let player;
@@ -45,23 +49,20 @@
         }
     });
 
-    const detect_interval = setInterval(() => {
-        player = app.querySelector('div#movie_player');
-        if (!player) {
+    setInterval(() => {
+        const player_c = app.querySelector('div#movie_player');
+        if (!player_c || player_c === player) {
             return;
         }
+        player = player_c;
 
         area = player.querySelector('span.ytp-volume-area');
         if (!area) {
             return;
         }
 
-        clearInterval(detect_interval);
-
-        player.addEventListener('onVolumeChange', e => {
-            activate(e.volume);
-        });
+        player.addEventListener('onVolumeChange', onVolumeChange);
 
         document.dispatchEvent(new CustomEvent('_tap_volume_init'));
-    }, 500);
+    }, 1000);
 })();
