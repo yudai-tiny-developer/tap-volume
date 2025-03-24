@@ -49,20 +49,21 @@
         }
     });
 
-    setInterval(() => {
-        const player_c = app.querySelector('div#movie_player');
-        if (!player_c || player_c === player) {
+    const detect_interval = setInterval(() => {
+        player = app.querySelector('div#movie_player');
+        if (!player) {
             return;
         }
-        player = player_c;
 
         area = player.querySelector('span.ytp-volume-area');
         if (!area) {
             return;
         }
 
+        clearInterval(detect_interval);
+
         player.addEventListener('onVolumeChange', onVolumeChange);
 
         document.dispatchEvent(new CustomEvent('_tap_volume_init'));
-    }, 1000);
+    }, 500);
 })();
