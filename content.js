@@ -81,25 +81,29 @@ function main(app, common) {
     let settings;
     let area;
     let panel;
-    let detect_interval;
 
     chrome.runtime.onMessage.addListener(shortcut_command);
 
     chrome.storage.onChanged.addListener(loadSettings);
 
     document.addEventListener('_tap_volume_init', e => {
-        clearInterval(detect_interval);
-        detect_interval = setInterval(() => {
-            const area_c = app.querySelector('span.ytp-volume-area');
-            if (!area_c || area_c === area) {
+        const detect_interval = setInterval(() => {
+            const player = app.querySelector('div#movie_player');
+            if (!player) {
                 return;
             }
-            area = area_c;
+
+            area = player.querySelector('span.ytp-volume-area');
+            if (!area) {
+                return;
+            }
 
             panel = area.querySelector('div.ytp-volume-panel');
             if (!panel) {
                 return;
             }
+
+            clearInterval(detect_interval);
 
             area.insertBefore(button_v5, panel);
             area.insertBefore(button_v4, button_v5);
@@ -108,7 +112,7 @@ function main(app, common) {
             area.insertBefore(button_v1, button_v2);
 
             loadSettings();
-        }, 1000);
+        }, 500);
     });
 
     const s = document.createElement('script');
