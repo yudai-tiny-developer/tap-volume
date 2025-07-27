@@ -29,12 +29,15 @@ function main(app, common) {
         button.style.display = common.value(enabled, default_enabled) ? '' : 'none';
         button.classList.add('_tap_volume_button', '_tap_volume_button_' + detail, 'ytp-button');
         if (new_style) {
-            button.innerHTML = `<svg width="75%" height="75%" viewBox="0 0 72 72"><text font-size="20" x="35%" y="45%" text-anchor="middle">${detail}%</text></svg>`;
+            button.innerHTML = `<svg width="36" height="24" viewBox="0 0 36 24"><text font-size="14" x="50%" y="50%" dominant-baseline="central" text-anchor="middle">${detail}%</text></svg>`;
         } else {
             button.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 72 72"><text font-size="20" x="50%" y="50%" dominant-baseline="central" text-anchor="middle">${detail}%</text></svg>`;
         }
         button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: detail }));
+
+            clearTimeout(new_style_interval);
+            new_style_interval = setTimeout(() => panel.dispatchEvent(new MouseEvent('focusout')), 1000);
         });
     }
 
@@ -46,6 +49,7 @@ function main(app, common) {
 
     function create_button() {
         const button = document.createElement('button');
+        button.classList.add('ytp-button');
         button.style.display = 'none';
         return button;
     }
@@ -86,6 +90,7 @@ function main(app, common) {
     let area;
     let panel;
     let new_style;
+    let new_style_interval;
 
     chrome.runtime.onMessage.addListener(shortcut_command);
 
@@ -98,7 +103,7 @@ function main(app, common) {
                 return;
             }
 
-            area = player.querySelector('div.ytp-right-controls-left'); // new style
+            area = player.querySelector('div.ytp-mute-button'); // new style
             if (!area) {
                 area = player.querySelector('span.ytp-volume-area'); // old style
                 if (!area) {
@@ -111,7 +116,8 @@ function main(app, common) {
             }
 
             if (new_style) {
-                panel = area.querySelector('div.ytp-mute-button');
+                panel = area.querySelector('div.ytp-volume-popover');
+                panel.addEventListener('mouseenter', () => clearTimeout(new_style_interval));
             } else {
                 panel = area.querySelector('div.ytp-volume-panel');
             }
