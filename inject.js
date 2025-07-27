@@ -45,7 +45,6 @@
                     player.unMute();
                 }
             }
-            setTimeout(() => player.dispatchEvent(new MouseEvent('mouseout')), 500);
         }
     });
 
@@ -55,7 +54,7 @@
             return;
         }
 
-        area = player.querySelector('div.ytp-right-controls-left'); // new style
+        area = player.querySelector('div.ytp-mute-button'); // new style
         if (!area) {
             area = player.querySelector('span.ytp-volume-area'); // old style
             if (!area) {

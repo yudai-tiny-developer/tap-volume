@@ -15,3 +15,15 @@ button._tap_volume_button._tap_volume_active {
 div.ytp-volume-panel {
     display: var(--tap-volume-slider-display) !important;
 }
+
+div.ytp-volume-popover {
+    display: var(--tap-volume-slider-display) !important;
+}
+
+button.ytp-volume-icon {
+    width: unset !important;
+}
+
+button._tap_volume_button {
+    width: 60px !important;
+}
