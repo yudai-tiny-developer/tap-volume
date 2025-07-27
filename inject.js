@@ -55,9 +55,12 @@
             return;
         }
 
-        area = player.querySelector('span.ytp-volume-area');
+        area = player.querySelector('div.ytp-right-controls-left'); // new style
         if (!area) {
-            return;
+            area = player.querySelector('span.ytp-volume-area'); // old style
+            if (!area) {
+                return;
+            }
         }
 
         clearInterval(detect_interval);

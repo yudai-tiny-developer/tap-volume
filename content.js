@@ -28,7 +28,11 @@ function main(app, common) {
         const detail = common.value(value, default_value);
         button.style.display = common.value(enabled, default_enabled) ? '' : 'none';
         button.classList.add('_tap_volume_button', '_tap_volume_button_' + detail, 'ytp-button');
-        button.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 72 72"><text font-size="20" x="50%" y="50%" dominant-baseline="central" text-anchor="middle">${detail}%</text></svg>`;
+        if (new_style) {
+            button.innerHTML = `<svg width="75%" height="75%" viewBox="0 0 72 72"><text font-size="20" x="35%" y="45%" text-anchor="middle">${detail}%</text></svg>`;
+        } else {
+            button.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 72 72"><text font-size="20" x="50%" y="50%" dominant-baseline="central" text-anchor="middle">${detail}%</text></svg>`;
+        }
         button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: detail }));
         });
@@ -81,6 +85,7 @@ function main(app, common) {
     let settings;
     let area;
     let panel;
+    let new_style;
 
     chrome.runtime.onMessage.addListener(shortcut_command);
 
@@ -93,19 +98,30 @@ function main(app, common) {
                 return;
             }
 
-            area = player.querySelector('span.ytp-volume-area');
+            area = player.querySelector('div.ytp-right-controls-left'); // new style
             if (!area) {
-                return;
+                area = player.querySelector('span.ytp-volume-area'); // old style
+                if (!area) {
+                    return;
+                } else {
+                    new_style = false;
+                }
+            } else {
+                new_style = true;
             }
 
-            panel = area.querySelector('div.ytp-volume-panel');
+            if (new_style) {
+                panel = area.querySelector('div.ytp-mute-button');
+            } else {
+                panel = area.querySelector('div.ytp-volume-panel');
+            }
             if (!panel) {
                 return;
             }
 
             clearInterval(detect_interval);
 
-            area.insertBefore(button_v5, panel);
+            area.insertBefore(button_v5, panel.nextSibling);
             area.insertBefore(button_v4, button_v5);
             area.insertBefore(button_v3, button_v4);
             area.insertBefore(button_v2, button_v3);
