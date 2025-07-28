@@ -1,11 +1,11 @@
 button._tap_volume_button {
-    fill: #eee !important;
-    text-align: center !important;
+    color: #eee !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
 button._tap_volume_button._tap_volume_active {
-    fill: #ff8983 !important;
-    font-weight: bold !important;
+    color: #ff8983 !important;
 }
 
 :root {
@@ -22,8 +22,4 @@ div.ytp-volume-popover {
 
 button.ytp-volume-icon {
     width: unset !important;
-}
-
-button._tap_volume_button {
-    width: 60px !important;
 }

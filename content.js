@@ -26,13 +26,9 @@ function main(app, common) {
 
     function update_button(button, value, default_value, enabled, default_enabled) {
         const detail = common.value(value, default_value);
-        button.style.display = common.value(enabled, default_enabled) ? '' : 'none';
+        button.style.display = common.value(enabled, default_enabled) ? 'inline-flex' : 'none';
         button.classList.add('_tap_volume_button', '_tap_volume_button_' + detail, 'ytp-button');
-        if (new_style) {
-            button.innerHTML = `<svg width="36" height="24" viewBox="0 0 36 24"><text font-size="14" x="50%" y="50%" dominant-baseline="central" text-anchor="middle">${detail}%</text></svg>`;
-        } else {
-            button.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 72 72"><text font-size="20" x="50%" y="50%" dominant-baseline="central" text-anchor="middle">${detail}%</text></svg>`;
-        }
+        button.innerHTML = `<span class="ytp-live">${detail}%</span>`;
         button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: detail }));
 
