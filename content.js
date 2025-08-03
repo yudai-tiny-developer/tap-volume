@@ -85,6 +85,7 @@ function main(app, common) {
     let settings;
     let area;
     let panel;
+    let detect_interval;
     let new_style;
     let new_style_interval;
 
@@ -92,8 +93,9 @@ function main(app, common) {
 
     chrome.storage.onChanged.addListener(loadSettings);
 
-    document.addEventListener('_tap_volume_init', e => {
-        const detect_interval = setInterval(() => {
+    document.addEventListener('_tap_volume_init', () => {
+        clearInterval(detect_interval);
+        detect_interval = setInterval(() => {
             const player = app.querySelector('div#movie_player');
             if (!player) {
                 return;
