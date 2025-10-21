@@ -16,10 +16,6 @@ div.ytp-volume-panel {
     display: var(--tap-volume-slider-display) !important;
 }
 
-div.ytp-volume-popover {
-    display: var(--tap-volume-slider-display) !important;
-}
-
 button.ytp-volume-icon {
     width: unset !important;
 }

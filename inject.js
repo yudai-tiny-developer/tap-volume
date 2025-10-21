@@ -54,12 +54,9 @@
             return;
         }
 
-        area = player.querySelector('div.ytp-mute-button'); // new style
+        area = player.querySelector('span.ytp-volume-area');
         if (!area) {
-            area = player.querySelector('span.ytp-volume-area'); // old style
-            if (!area) {
-                return;
-            }
+            return;
         }
 
         clearInterval(detect_interval);
