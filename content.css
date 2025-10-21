@@ -12,6 +12,10 @@ button._tap_volume_button._tap_volume_active {
     --tap-volume-slider-display: block;
 }
 
+span.ytp-volume-area {
+    padding-right: 0px !important;
+}
+
 div.ytp-volume-panel {
     display: var(--tap-volume-slider-display) !important;
 }
