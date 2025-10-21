@@ -31,9 +31,6 @@ function main(app, common) {
         button.innerHTML = `<span class="ytp-live" translate="no">${detail}%</span>`;
         button.addEventListener('click', () => {
             document.dispatchEvent(new CustomEvent('_tap_volume', { detail: detail }));
-
-            clearTimeout(new_style_interval);
-            new_style_interval = setTimeout(() => panel.dispatchEvent(new MouseEvent('focusout')), 1000);
         });
     }
 
@@ -86,8 +83,6 @@ function main(app, common) {
     let area;
     let panel;
     let detect_interval;
-    let new_style;
-    let new_style_interval;
 
     chrome.runtime.onMessage.addListener(shortcut_command);
 
@@ -101,24 +96,12 @@ function main(app, common) {
                 return;
             }
 
-            area = player.querySelector('div.ytp-mute-button'); // new style
+            area = player.querySelector('span.ytp-volume-area');
             if (!area) {
-                area = player.querySelector('span.ytp-volume-area'); // old style
-                if (!area) {
-                    return;
-                } else {
-                    new_style = false;
-                }
-            } else {
-                new_style = true;
+                return;
             }
 
-            if (new_style) {
-                panel = area.querySelector('div.ytp-volume-popover');
-                panel.addEventListener('mouseenter', () => clearTimeout(new_style_interval));
-            } else {
-                panel = area.querySelector('div.ytp-volume-panel');
-            }
+            panel = area.querySelector('div.ytp-volume-panel');
             if (!panel) {
                 return;
             }
