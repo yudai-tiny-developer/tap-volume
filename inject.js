@@ -20,7 +20,11 @@
     }
 
     function onVolumeChange(e) {
-        activate(e.volume);
+        if (e.muted) {
+            activate(0);
+        } else {
+            activate(e.volume);
+        }
     }
 
     const app = document.querySelector('ytd-app') ?? document.body; // YouTube.com or Embedded Player
