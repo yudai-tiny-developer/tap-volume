@@ -10,6 +10,7 @@ button._tap_volume_button._tap_volume_active {
 
 :root {
     --tap-volume-slider-display: block;
+    --tap-volume-icon-display: block;
 }
 
 span.ytp-volume-area {
@@ -18,6 +19,10 @@ span.ytp-volume-area {
 
 div.ytp-volume-panel {
     display: var(--tap-volume-slider-display) !important;
+}
+
+div.ytp-mute-button {
+    display: var(--tap-volume-icon-display) !important;
 }
 
 button.ytp-volume-icon {

@@ -56,6 +56,11 @@ function main(common, settings, progress, data) {
         row.appendChild(settings.createLabel(cell_class, 'Hide Volume Slider'));
         row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'hide_slider', data.hide_slider, common.default_hide_slider, common.value));
         container.appendChild(row);
+    } {
+        const row = settings.createRow(row_class);
+        row.appendChild(settings.createLabel(cell_class, 'Hide Volume Icon'));
+        row.appendChild(settings.createToggle(cell_class, toggle_class, label_class, 'hide_volume_icon', data.hide_volume_icon, common.default_hide_volume_icon, common.value));
+        container.appendChild(row);
     }
 
     settings.registerResetButton(reset_button, progress_div, progress_class, done_class, toggle_class, input_class, progress);
