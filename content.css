@@ -25,6 +25,6 @@ div.ytp-mute-button {
     display: var(--tap-volume-icon-display) !important;
 }
 
-button.ytp-volume-icon {
-    width: unset !important;
+button.ytp-mute-button {
+    display: var(--tap-volume-icon-display) !important;
 }
