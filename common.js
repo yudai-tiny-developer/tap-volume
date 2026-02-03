@@ -5,6 +5,7 @@ export const storage = [
     'v4', 'v4_enabled',
     'v5', 'v5_enabled',
     'hide_slider',
+    'hide_volume_icon',
 ];
 
 export const default_v1 = 0;
@@ -24,6 +25,7 @@ export const default_v4_enabled = true;
 export const default_v5_enabled = true;
 
 export const default_hide_slider = false;
+export const default_hide_volume_icon = false;
 
 export function value(value, defaultValue) {
     return value === undefined ? defaultValue : value;

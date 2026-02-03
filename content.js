@@ -9,7 +9,7 @@ function main(app, common) {
         chrome.storage.local.get(common.storage, data => {
             settings = data;
             update_buttons();
-            update_slider();
+            update_official_ui();
             document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
         });
     }
@@ -34,9 +34,10 @@ function main(app, common) {
         });
     }
 
-    function update_slider() {
+    function update_official_ui() {
         if (settings) {
             document.documentElement.style.setProperty('--tap-volume-slider-display', common.value(settings.hide_slider, common.default_hide_slider) ? 'none' : 'block');
+            document.documentElement.style.setProperty('--tap-volume-icon-display', common.value(settings.hide_volume_icon, common.default_hide_volume_icon) ? 'none' : 'block');
         }
     }
 
