@@ -1,11 +1,15 @@
 button._tap_volume_button {
-    color: #eee !important;
-    justify-content: center !important;
-    align-items: center !important;
+    color: #eee;
+    justify-content: center;
+    align-items: center;
 }
 
 button._tap_volume_button._tap_volume_active {
-    color: #ff8983 !important;
+    color: #ff8983;
+}
+
+button._tap_volume_button_new_embedded_player {
+    margin: 0 8px;
 }
 
 :root {
@@ -26,5 +30,13 @@ div.ytp-mute-button {
 }
 
 button.ytp-mute-button {
+    display: var(--tap-volume-icon-display) !important;
+}
+
+div.ytdVolumeControlsSliderContainer {
+    display: var(--tap-volume-slider-display) !important;
+}
+
+button.ytdVolumeControlsMuteIconButton {
     display: var(--tap-volume-icon-display) !important;
 }
