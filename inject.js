@@ -1,16 +1,14 @@
 (() => {
     function update_class(remove_class, add_target_class, add_value) {
-        if (area) {
-            for (const button of area.querySelectorAll('button._tap_volume_button')) {
-                const oldToken = button.classList.contains(remove_class) ? remove_class : undefined;
-                const newToken = button.classList.contains(add_target_class) ? add_value : undefined;
-                if (oldToken && newToken) {
-                    button.classList.replace(oldToken, newToken);
-                } else if (oldToken) {
-                    button.classList.remove(oldToken);
-                } else if (newToken) {
-                    button.classList.add(newToken);
-                }
+        for (const button of document.getElementsByClassName('_tap_volume_button')) {
+            const oldToken = button.classList.contains(remove_class) ? remove_class : undefined;
+            const newToken = button.classList.contains(add_target_class) ? add_value : undefined;
+            if (oldToken && newToken) {
+                button.classList.replace(oldToken, newToken);
+            } else if (oldToken) {
+                button.classList.remove(oldToken);
+            } else if (newToken) {
+                button.classList.add(newToken);
             }
         }
     }
@@ -52,13 +50,16 @@
 
     const detect_interval = setInterval(() => {
         player = document.getElementById("movie_player");
-        if (!player) {
-            return;
-        }
+        if (!player) return;
 
-        area = player.querySelector('span.ytp-volume-area');
-        if (!area) {
-            return;
+        const action_menu = document.getElementsByTagName('player-fullscreen-action-menu')?.[0];
+        if (action_menu) { // new-style YouTube embedded player
+            area = action_menu.querySelector('div.action-menu-engagement-buttons-wrapper');
+            if (!area) return;
+
+        } else {
+            area = player.querySelector('span.ytp-volume-area');
+            if (!area) return;
         }
 
         clearInterval(detect_interval);
