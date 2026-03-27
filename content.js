@@ -48,7 +48,47 @@ function main(common) {
         return button;
     }
 
-    const shortcut_command = command => {
+    function append_container() {
+        function append_container_internal() {
+            if (common.isEmbed(location.href)) {
+                const area = document.getElementsByTagName('player-fullscreen-action-menu')[0]?.querySelector('div.action-menu-engagement-buttons-wrapper');
+                if (!area) return;
+
+                const panel = area.querySelector('ytm-slim-metadata-button-renderer');
+                if (!panel) return;
+
+                if (!area.contains(button_v1)) {
+                    area.insertBefore(button_v5, panel.nextSibling);
+                    area.insertBefore(button_v4, button_v5);
+                    area.insertBefore(button_v3, button_v4);
+                    area.insertBefore(button_v2, button_v3);
+                    area.insertBefore(button_v1, button_v2);
+                    document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
+                }
+            } else {
+                const area = player.querySelector('span.ytp-volume-area');
+                if (!area) return;
+
+                const panel = area.querySelector('div.ytp-volume-panel');
+                if (!panel) return;
+
+                if (!area.contains(button_v1)) {
+                    area.insertBefore(button_v5, panel.nextSibling);
+                    area.insertBefore(button_v4, button_v5);
+                    area.insertBefore(button_v3, button_v4);
+                    area.insertBefore(button_v2, button_v3);
+                    area.insertBefore(button_v1, button_v2);
+                    document.dispatchEvent(new CustomEvent('_tap_volume_loaded'));
+                }
+            }
+        }
+
+        clearInterval(append_container_interval);
+        append_container_interval = setInterval(append_container_internal, 500);
+        append_container_internal();
+    }
+
+    function shortcut_command(command) {
         if (settings) {
             let value;
             switch (command) {
@@ -81,50 +121,22 @@ function main(common) {
     const button_v5 = create_button();
 
     let settings;
-    let area;
-    let panel;
+    let player;
     let detect_interval;
-
-    chrome.runtime.onMessage.addListener(shortcut_command);
-
-    chrome.storage.onChanged.addListener(loadSettings);
+    let append_container_interval;
 
     document.addEventListener('_tap_volume_init', () => {
         clearInterval(detect_interval);
         detect_interval = setInterval(() => {
-            const player = document.getElementById("movie_player");
+            player = document.getElementById("movie_player");
             if (!player) return;
-
-            const action_menu = document.getElementsByTagName('player-fullscreen-action-menu')?.[0];
-            if (action_menu) { // new-style YouTube embedded player
-                area = action_menu.querySelector('div.action-menu-engagement-buttons-wrapper');
-                if (!area) return;
-
-                panel = action_menu.querySelector('ytm-slim-metadata-button-renderer');
-                if (!panel) return;
-
-                button_v1.classList.add('_tap_volume_button_new_embedded_player');
-                button_v2.classList.add('_tap_volume_button_new_embedded_player');
-                button_v3.classList.add('_tap_volume_button_new_embedded_player');
-                button_v4.classList.add('_tap_volume_button_new_embedded_player');
-                button_v5.classList.add('_tap_volume_button_new_embedded_player');
-            } else {
-                area = player.querySelector('span.ytp-volume-area');
-                if (!area) return;
-
-                panel = area.querySelector('div.ytp-volume-panel');
-                if (!panel) return;
-            }
 
             clearInterval(detect_interval);
 
-            area.insertBefore(button_v5, panel.nextSibling);
-            area.insertBefore(button_v4, button_v5);
-            area.insertBefore(button_v3, button_v4);
-            area.insertBefore(button_v2, button_v3);
-            area.insertBefore(button_v1, button_v2);
-
+            append_container();
+            chrome.storage.onChanged.addListener(loadSettings);
             loadSettings();
+            chrome.runtime.onMessage.addListener(shortcut_command);
         }, 500);
     });
 
